@@ -56,6 +56,9 @@
     <dimen name="percentBottom">0.85</dimen>
     <!--signup profile image width-->
 
+    <dimen name="movieTitle">24sp</dimen>
+    <dimen name="movieImageHt">250dp</dimen>
+
     <!--  profile page  -->
     <dimen name="proWidth">150sp</dimen>
     <dimen name="proTitle">24sp</dimen>
@@ -78,5 +81,7 @@
     <dimen name="dm_sub_title1">13sp</dimen>
     <dimen name="dm_small_txt1">11sp</dimen>
     <dimen name="dm_small_txt_chat1">9sp</dimen>
+
+
 
 </resources>

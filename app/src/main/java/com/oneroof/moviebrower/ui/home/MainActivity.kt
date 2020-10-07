@@ -14,6 +14,7 @@ import com.oneroof.moviebrower.R
 import com.oneroof.moviebrower.data.model.GridSpacingItemDecoration
 import com.oneroof.moviebrower.data.model.MovieResult
 import com.oneroof.moviebrower.data.others.*
+import com.oneroof.moviebrower.ui.moviedetail.MovieDetailActivity
 import com.oneroof.moviebrower.ui.search.SearchActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.custom_bottom_sheet_filter.view.*
@@ -65,7 +66,11 @@ class MainActivity : AppCompatActivity(),MoviesListener, KodeinAware {
 
         moviesRV.layoutManager = LinearLayoutManager(this)
         adapter = MovieAdapter(this, itemList as ArrayList<MovieResult>) {
-
+            val i = Intent(this@MainActivity, MovieDetailActivity::class.java)
+            i.putExtra("details",it)
+            i.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(i)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
         val mLayoutManager = GridLayoutManager(this@MainActivity, 2)
         moviesRV.layoutManager = mLayoutManager

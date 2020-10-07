@@ -1,5 +1,6 @@
 package com.oneroof.moviebrower.ui.search
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
@@ -20,6 +21,7 @@ import com.oneroof.moviebrower.data.others.show
 import com.oneroof.moviebrower.data.others.showToast
 import com.oneroof.moviebrower.ui.home.MovieAdapter
 import com.oneroof.moviebrower.ui.home.MoviesViewModelFactory
+import com.oneroof.moviebrower.ui.moviedetail.MovieDetailActivity
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.ObservableEmitter
 import io.reactivex.rxjava3.core.ObservableOnSubscribe
@@ -128,7 +130,11 @@ class SearchActivity : AppCompatActivity(),SearchListener, KodeinAware {
 
         searchRV.layoutManager = LinearLayoutManager(this)
         adapter = MovieAdapter(this, itemList as ArrayList<MovieResult>) {
-
+            val i = Intent(this@SearchActivity, MovieDetailActivity::class.java)
+            i.putExtra("details",it)
+            i.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(i)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
         val mLayoutManager = GridLayoutManager(this@SearchActivity, 2)
         searchRV.layoutManager = mLayoutManager

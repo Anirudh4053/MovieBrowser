@@ -25,6 +25,9 @@
     <dimen name="dm_edit_prof_wd_ht">150dp</dimen>
     <!--edit profile-->
 
+    <dimen name="movieTitle">24sp</dimen>
+    <dimen name="movieImageHt">250dp</dimen>
+
     <!--signup profile image width-->
     <dimen name="signWidth">120sp</dimen>
     <dimen name="signHeading">26sp</dimen>
