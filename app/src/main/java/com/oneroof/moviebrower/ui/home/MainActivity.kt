@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.oneroof.moviebrower.R
 import com.oneroof.moviebrower.data.model.GridSpacingItemDecoration
 import com.oneroof.moviebrower.data.model.MovieResult
@@ -29,6 +30,10 @@ class MainActivity : AppCompatActivity(),MoviesListener, KodeinAware {
     private var itemList = mutableListOf<MovieResult>()
     private lateinit var adapter:MovieAdapter
     private lateinit var viewModel:MoviesViewModel
+    //for pagination
+    var isLoading:Boolean = false
+    private var pageNo:Int = 1
+    var firstLoad:Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -65,17 +70,34 @@ class MainActivity : AppCompatActivity(),MoviesListener, KodeinAware {
         moviesRV.itemAnimator = DefaultItemAnimator()
         moviesRV.adapter = adapter
 
+        moviesRV.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (! recyclerView.canScrollVertically(1)){ //1 for down
+                    if(!isLoading){
+                        println("pagination -- $pageNo")
+                        bottomProgressBar.show()
+                        isLoading = true
+                        viewModel.getAllMovieList("popularity.desc",pageNo)
+                    }
+                }
+            }
+        })
+
         getMovies()
         swipeToRefresh.setOnRefreshListener {
             getMovies()
         }
+
+
     }
 
     private fun getMovies() {
+        isLoading = false
         itemList.clear()
         adapter.notifyDataSetChanged()
         swipeToRefresh.isRefreshing = false
-        viewModel.getAllMovieList("popularity.desc",1)
+        viewModel.getAllMovieList("popularity.desc",pageNo)
     }
     override fun onStarted() {
         progressBar.show()
@@ -88,5 +110,13 @@ class MainActivity : AppCompatActivity(),MoviesListener, KodeinAware {
 
     override fun onHideLoader() {
         progressBar.hide()
+        bottomProgressBar.hide()
+    }
+
+    override fun onSuccess(page: Int, totalPages: Int) {
+        onHideLoader()
+        pageNo = page+1
+        println("$pageNo -- $page -- $totalPages")
+        isLoading = pageNo > totalPages
     }
 }

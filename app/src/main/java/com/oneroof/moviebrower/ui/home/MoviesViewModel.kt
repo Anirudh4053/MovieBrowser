@@ -16,11 +16,14 @@ class MoviesViewModel(private val moviesRepository: MoviesRepository) : ViewMode
     }*/
 
     fun getAllMovieList(sortBy:String,pageNo:Int){
-        moviesListener?.onStarted()
+        if(pageNo == 1) {
+            moviesListener?.onStarted()
+        }
         moviesRepository.getOrder(sortBy,pageNo,object :MoviesRepository.OnData{
 
             override fun onSuccess(response: MovieResponse) {
                 moviesListener?.onHideLoader()
+                moviesListener?.onSuccess(response.page,response.totalPages)
                 viewModelScope.launch {
                     movieList as MutableLiveData
                     movieList.value = response.results

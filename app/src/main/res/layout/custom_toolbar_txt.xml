@@ -48,7 +48,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:text="ABC"
-                android:textSize="@dimen/proSubTitle"
+                android:textSize="@dimen/proTitle"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

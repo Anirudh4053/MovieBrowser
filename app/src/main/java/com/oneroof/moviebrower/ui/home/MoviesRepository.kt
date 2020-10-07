@@ -6,7 +6,7 @@ import com.oneroof.moviebrower.data.others.makeRequest
 
 class MoviesRepository (private val myApi: MyApi){
     fun getOrder(sortBy:String,pageNo:Int,onData:OnData){
-        myApi.getMovies(sortBy,1).makeRequest(
+        myApi.getMovies(sortBy,pageNo).makeRequest(
             onSuccess = { response ->
                 try {
                     onData.onSuccess(response)
