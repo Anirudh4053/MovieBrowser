@@ -9,15 +9,15 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.oneroof.moviebrower.R
 import com.oneroof.moviebrower.data.model.GridSpacingItemDecoration
 import com.oneroof.moviebrower.data.model.MovieResult
-import com.oneroof.moviebrower.data.others.globalDpToPx
-import com.oneroof.moviebrower.data.others.hide
-import com.oneroof.moviebrower.data.others.show
-import com.oneroof.moviebrower.data.others.showToast
+import com.oneroof.moviebrower.data.others.*
 import com.oneroof.moviebrower.ui.search.SearchActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.custom_bottom_sheet_filter.view.*
+import kotlinx.android.synthetic.main.custom_sort_layout.view.*
 import kotlinx.android.synthetic.main.custom_toolbar_txt.view.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity(),MoviesListener, KodeinAware {
     //for pagination
     var isLoading:Boolean = false
     private var pageNo:Int = 1
-    var firstLoad:Boolean = false
+    private var sortedBy:String = POPULARITY_SORT
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity(),MoviesListener, KodeinAware {
         includeToolbarHome.apply {
             this.backBtn.hide()
             this.searchIcon.show()
-            this.filterIcon.show()
+            this.filterIcon.hide()
             this.toolbarTitle.text = "Movies"
             this.searchIcon.setOnClickListener {
                 val i = Intent(this@MainActivity, SearchActivity::class.java)
@@ -51,6 +51,9 @@ class MainActivity : AppCompatActivity(),MoviesListener, KodeinAware {
             }
         }
 
+        includeSortLayout.setOnClickListener {
+            showFilterDialog()
+        }
         viewModel = ViewModelProvider(this,factory).get(MoviesViewModel::class.java)
         viewModel.moviesListener = this
         viewModel.movieList.observe(this, Observer {
@@ -78,7 +81,7 @@ class MainActivity : AppCompatActivity(),MoviesListener, KodeinAware {
                         println("pagination -- $pageNo")
                         bottomProgressBar.show()
                         isLoading = true
-                        viewModel.getAllMovieList("popularity.desc",pageNo)
+                        viewModel.getAllMovieList(sortedBy,pageNo)
                     }
                 }
             }
@@ -88,16 +91,16 @@ class MainActivity : AppCompatActivity(),MoviesListener, KodeinAware {
         swipeToRefresh.setOnRefreshListener {
             getMovies()
         }
-
-
     }
 
     private fun getMovies() {
-        isLoading = false
+        pageNo = 1
+        includeSortLayout.hide()
+        isLoading = true
         itemList.clear()
         adapter.notifyDataSetChanged()
         swipeToRefresh.isRefreshing = false
-        viewModel.getAllMovieList("popularity.desc",pageNo)
+        viewModel.getAllMovieList(sortedBy,pageNo)
     }
     override fun onStarted() {
         progressBar.show()
@@ -114,9 +117,41 @@ class MainActivity : AppCompatActivity(),MoviesListener, KodeinAware {
     }
 
     override fun onSuccess(page: Int, totalPages: Int) {
+        if(page == 1) {
+            includeSortLayout.show()
+        }
         onHideLoader()
         pageNo = page+1
         println("$pageNo -- $page -- $totalPages")
         isLoading = pageNo > totalPages
+    }
+    private fun showFilterDialog(){
+        val dialog = BottomSheetDialog(this)
+        dialog.setCanceledOnTouchOutside(true)
+        val bottomSheet = layoutInflater.inflate(R.layout.custom_bottom_sheet_filter, null)
+
+        if(sortedBy == POPULARITY_SORT)
+            bottomSheet.radio_popularity.isChecked = true
+        else
+            bottomSheet.radio_rated.isChecked = true
+
+        bottomSheet.radio_popularity.setOnClickListener {
+            if(sortedBy != POPULARITY_SORT) {
+                includeSortLayout.sortedTxt.text = "Sorted by popularity"
+                sortedBy = POPULARITY_SORT
+                getMovies()
+            }
+            dialog.dismiss()
+        }
+        bottomSheet.radio_rated.setOnClickListener {
+            if(sortedBy != RATINGS_SORT) {
+                includeSortLayout.sortedTxt.text = "Sorted by ratings"
+                sortedBy = RATINGS_SORT
+                getMovies()
+            }
+            dialog.dismiss()
+        }
+        dialog.setContentView(bottomSheet)
+        dialog.show()
     }
 }

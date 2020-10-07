@@ -25,6 +25,8 @@ const val BASE_URL = "https://api.themoviedb.org"
 const val API = "2a4c1a201c7c4ffc801192a2c7e6096d"
 const val MOVIE_IMAGE_PATH = "https://image.tmdb.org/t/p/w500"
 const val ERROR = "Something went wrong, please try again later"
+const val POPULARITY_SORT = "popularity.desc"
+const val RATINGS_SORT = "vote_average.desc"
 fun Context.showToast(text: CharSequence, duration: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this, text, duration).show()
 }

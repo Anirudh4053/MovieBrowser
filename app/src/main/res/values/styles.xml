@@ -17,4 +17,6 @@
         <item name="colorControlActivated">@color/goldenColor</item>
         <item name="android:textSize">@dimen/dm_editText</item>
     </style>
+
+
 </resources>
