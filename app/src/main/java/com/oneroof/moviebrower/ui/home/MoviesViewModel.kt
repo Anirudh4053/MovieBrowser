@@ -20,7 +20,7 @@ class MoviesViewModel(private val moviesRepository: MoviesRepository) : ViewMode
         moviesRepository.getOrder(sortBy,pageNo,object :MoviesRepository.OnData{
 
             override fun onSuccess(response: MovieResponse) {
-                //moviesListener?.onSuccess(response.)
+                moviesListener?.onHideLoader()
                 viewModelScope.launch {
                     movieList as MutableLiveData
                     movieList.value = response.results

@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorPrimary">#303030</color>
+    <color name="colorPrimaryDark">#1D1D1D</color>
     <color name="colorAccent">#03DAC5</color>
+    <color name="whiteColor">#FFFFFF</color>
+    <color name="backgroundColor">#202020</color>
+    <color name="cardBackground">#2A2A2A</color>
+    <color name="goldenColor">#F4C546</color>
 </resources>

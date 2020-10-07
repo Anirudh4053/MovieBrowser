@@ -7,6 +7,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.util.DisplayMetrics
+import android.util.TypedValue
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -21,6 +22,7 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 const val BASE_URL = "https://api.themoviedb.org"
+const val MOVIE_IMAGE_PATH = "https://image.tmdb.org/t/p/w500"
 fun Context.showToast(text: CharSequence, duration: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this, text, duration).show()
 }
@@ -32,11 +34,15 @@ fun hideKeyboard(activity: Activity) {
     }
     imm.hideSoftInputFromWindow(view.windowToken, 0)
 }
-fun ProgressBar.showLoader(){
-    this.visibility = View.VISIBLE
+fun View.show(){
+    visibility = View.VISIBLE
 }
-fun ProgressBar.hideLoader(){
-    this.visibility = View.GONE
+fun View.hide(){
+    visibility = View.GONE
+}
+fun Context.globalDpToPx(dp: Int): Int {
+    val r = resources
+    return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), r.displayMetrics))
 }
 fun Window.disableUserInteraction(){
     this.setFlags(

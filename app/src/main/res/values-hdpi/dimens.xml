@@ -1,0 +1,50 @@
+<resources>
+    <!--home-->
+    <dimen name="dm_title">14sp</dimen>
+    <dimen name="dm_sub_title">12sp</dimen>
+    <dimen name="dm_small_txt">10sp</dimen>
+    <dimen name="dm_small_txt_chat">8sp</dimen>
+    <!--home-->
+
+    <!--confirm purchase-->
+    <dimen name="dm_btn_ht">50dp</dimen>
+    <dimen name="dm_small_bt_ht">35sp</dimen>
+    <dimen name="dm_btn_text">14sp</dimen>
+    <!--confirm purchase-->
+
+    <!--create account-->
+    <dimen name="dm_circle_size">14sp</dimen>
+    <dimen name="dm_editText">12sp</dimen>
+    <!--create account-->
+
+    <!--prod detail-->
+    <dimen name="dm_slider_ht">1sp</dimen>
+    <!--prod detail-->
+
+    <!--edit profile-->
+    <dimen name="dm_edit_prof_wd_ht">80dp</dimen>
+    <!--edit profile-->
+
+    <!--signup profile image width-->
+    <dimen name="signWidth">80sp</dimen>
+    <dimen name="signHeading">18sp</dimen>
+    <dimen name="percentTop">0.1</dimen>
+    <dimen name="percentBottom">0.9</dimen>
+    <!--signup profile image width-->
+
+    <!--  profile page  -->
+    <dimen name="proWidth">90sp</dimen>
+    <dimen name="proTitle">16sp</dimen>
+    <dimen name="proSubTitle">14sp</dimen>
+    <dimen name="proCount">14sp</dimen>
+    <dimen name="errWidth">90sp</dimen>
+    <!--  profile page  -->
+
+    <!--toolbar title-->
+    <dimen name="dm_toolbar_title">16sp</dimen>
+    <!--toolbar title-->
+
+    <dimen name="circleWidth">70sp</dimen>
+    <dimen name="OTPWidth">40dp</dimen>
+
+</resources>

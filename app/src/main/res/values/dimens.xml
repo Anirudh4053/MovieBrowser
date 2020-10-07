@@ -1,0 +1,82 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="nav_header_vertical_spacing">8dp</dimen>
+    <dimen name="nav_header_height">176dp</dimen>
+    <dimen name="nav_header_height_small">70dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="design_navigation_separator_vertical_padding" tools:override="true">5dp</dimen>
+    <!--toolbar title-->
+    <dimen name="dm_toolbar_title">16sp</dimen>
+    <!--toolbar title-->
+
+    <!--home-->
+    <dimen name="dm_title">16sp</dimen>
+    <dimen name="dm_sub_title">14sp</dimen>
+    <dimen name="dm_small_txt">12sp</dimen>
+    <dimen name="dm_small_txt_chat">10sp</dimen>
+    <!--home-->
+
+    <!--confirm purchase-->
+    <dimen name="dm_btn_ht">55dp</dimen>
+    <dimen name="dm_small_bt_ht">35sp</dimen>
+    <dimen name="dm_btn_text">14sp</dimen>
+    <!--confirm purchase-->
+
+    <!--create account-->
+    <dimen name="dm_circle_size">14sp</dimen>
+    <dimen name="dm_editText">16sp</dimen>
+    <!--create account-->
+
+    <!--prod detail-->
+    <dimen name="dm_slider_ht">4sp</dimen>
+    <!--prod detail-->
+
+    <!--edit profile-->
+    <dimen name="dm_edit_prof_wd_ht">80dp</dimen>
+    <!--edit profile-->
+
+    <!--seekbar-->
+    <dimen name="seek_bar_thickness">4dp</dimen>
+    <dimen name="seek_bar_thumb_size">30dp</dimen>
+    <dimen name="seek_bar_thumb_size_small">15dp</dimen>
+    <!--seekbar-->
+
+    <dimen name="simpletooltip_overlay_offset">0dp</dimen>
+    <dimen name="simpletooltip_padding">8dp</dimen>
+    <dimen name="simpletooltip_arrow_width">15dp</dimen>
+    <dimen name="simpletooltip_arrow_height">15dp</dimen>
+
+    <!--signup profile image width-->
+    <dimen name="signWidth">80sp</dimen>
+    <dimen name="signHeading">28sp</dimen>
+    <dimen name="percentTop">0.15</dimen>
+    <dimen name="percentBottom">0.85</dimen>
+    <!--signup profile image width-->
+
+    <!--  profile page  -->
+    <dimen name="proWidth">150sp</dimen>
+    <dimen name="proTitle">24sp</dimen>
+    <dimen name="proSubTitle">18sp</dimen>
+    <dimen name="proCount">18sp</dimen>
+    <dimen name="errWidth">130sp</dimen>
+    <!--  profile page  -->
+    <!--image border width-->
+    <dimen name="border_width_1dp">1dp</dimen>
+    <!--shadow height-->
+    <dimen name="shadow_height">5dp</dimen>
+
+    <dimen name="feed_icon">26sp</dimen>
+
+
+    <dimen name="circleWidth">150sp</dimen>
+    <dimen name="OTPWidth">40dp</dimen>
+
+    <dimen name="dm_title1">15sp</dimen>
+    <dimen name="dm_sub_title1">13sp</dimen>
+    <dimen name="dm_small_txt1">11sp</dimen>
+    <dimen name="dm_small_txt_chat1">9sp</dimen>
+
+</resources>
