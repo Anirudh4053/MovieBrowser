@@ -1,11 +1,9 @@
 package com.oneroof.moviebrower.ui.home
 
 import android.content.Context
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
@@ -34,9 +32,6 @@ class MovieAdapter(private var context: Context, private var sectionList: ArrayL
         val circularProgressDrawable = CircularProgressDrawable(context)
         circularProgressDrawable.strokeWidth = 5f
         circularProgressDrawable.centerRadius = 30f
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            circularProgressDrawable.setTint(ContextCompat.getColor(context, R.color.whiteColor))
-        }*/
         circularProgressDrawable.start()
         Glide
             .with(context)

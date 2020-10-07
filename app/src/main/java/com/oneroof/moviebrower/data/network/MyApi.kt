@@ -1,6 +1,7 @@
 package com.oneroof.moviebrower.data.network
 
 import com.oneroof.moviebrower.data.model.MovieResponse
+import com.oneroof.moviebrower.data.others.API
 import com.oneroof.moviebrower.data.others.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -11,8 +12,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
 interface MyApi {
-    @GET("/3/discover/movie?api_key=2a4c1a201c7c4ffc801192a2c7e6096d")
+    @GET("/3/discover/movie?api_key=$API")
     fun getMovies(@Query("sort_by") sortBy: String, @Query("page")page:Int): Call<MovieResponse>
+
+    @GET("/3/search/movie?api_key=$API")
+    fun queryMovie(@Query("query") query: String): Call<MovieResponse>
 
     companion object {
         operator fun invoke() : MyApi{

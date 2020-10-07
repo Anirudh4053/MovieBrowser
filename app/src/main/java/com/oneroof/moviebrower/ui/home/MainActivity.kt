@@ -15,6 +15,7 @@ import com.oneroof.moviebrower.data.others.globalDpToPx
 import com.oneroof.moviebrower.data.others.hide
 import com.oneroof.moviebrower.data.others.show
 import com.oneroof.moviebrower.data.others.showToast
+import com.oneroof.moviebrower.ui.search.SearchActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.custom_toolbar_txt.view.*
 import org.kodein.di.KodeinAware
@@ -33,13 +34,21 @@ class MainActivity : AppCompatActivity(),MoviesListener, KodeinAware {
 
         includeToolbarHome.apply {
             this.backBtn.hide()
+            this.searchIcon.show()
+            this.filterIcon.show()
             this.toolbarTitle.text = "Movies"
+            this.searchIcon.setOnClickListener {
+                val i = Intent(this@MainActivity, SearchActivity::class.java)
+                i.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                startActivity(i)
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            }
         }
 
         val viewModel = ViewModelProvider(this,factory).get(MoviesViewModel::class.java)
         viewModel.moviesListener = this
         viewModel.movieList.observe(this, Observer {
-            println("All movie List $it")
+            println("All movie List")
             itemList.addAll(it)
             adapter.notifyDataSetChanged()
         })

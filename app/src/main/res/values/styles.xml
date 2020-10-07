@@ -12,4 +12,9 @@
     <style name="AppTheme.WhiteAccent">
         <item name="colorAccent">@color/goldenColor</item> <!-- Whatever color you want-->
     </style>
+
+    <style name="GreyCursorSearchView" parent="Widget.AppCompat.SearchView">
+        <item name="colorControlActivated">@color/goldenColor</item>
+        <item name="android:textSize">@dimen/dm_editText</item>
+    </style>
 </resources>

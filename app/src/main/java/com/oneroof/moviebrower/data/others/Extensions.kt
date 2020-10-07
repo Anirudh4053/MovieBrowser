@@ -22,7 +22,9 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 const val BASE_URL = "https://api.themoviedb.org"
+const val API = "2a4c1a201c7c4ffc801192a2c7e6096d"
 const val MOVIE_IMAGE_PATH = "https://image.tmdb.org/t/p/w500"
+const val ERROR = "Something went wrong, please try again later"
 fun Context.showToast(text: CharSequence, duration: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this, text, duration).show()
 }
@@ -56,8 +58,8 @@ fun Window.enableUserInteraction(){
 
 fun customAlert(activity: Activity, title:String = "Error", msg:String = "", finish:Boolean = true){
     val builder = AlertDialog.Builder(activity)
-    builder.setTitle("Logout")
-    builder.setMessage("Are you sure you want to logout?")
+    builder.setTitle(title)
+    builder.setMessage(msg)
         .setCancelable(false)
         .setPositiveButton("Yes") { dialog, _ ->
             dialog.dismiss()
@@ -76,17 +78,17 @@ fun <T> Call<T>.makeRequest(onSuccess: (T) -> Unit, onFailure: (Throwable) -> Un
             if (response.isSuccessful){
                 response.body()?.let { onSuccess(it) }
             }else{
-                onFailure(Throwable("Some error occurred"))
+                onFailure(Throwable("No record found"))
             }
         }
 
         override fun onFailure(call: Call<T>, t: Throwable) {
             when(t){
-                is UnknownHostException -> Throwable("Please check your internet connection.")
-                is SocketTimeoutException -> Throwable("Very poor connection. Please check your internet.")
-                else -> Throwable("Something went wrong")
+                is UnknownHostException -> onFailure(Throwable("Please check your internet connection."))
+                is SocketTimeoutException -> onFailure(Throwable("Very poor connection. Please check your internet."))
+                else -> onFailure(Throwable("Something went wrong"))
             }
-            onFailure(t)
+            onFailure(Throwable("Please check your internet connection."))
         }
     })
 }
