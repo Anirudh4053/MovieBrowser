@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity(),MoviesListener, KodeinAware {
     private val factory by instance<MoviesViewModelFactory>()
     private var itemList = mutableListOf<MovieResult>()
     private lateinit var adapter:MovieAdapter
+    private lateinit var viewModel:MoviesViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -45,14 +46,14 @@ class MainActivity : AppCompatActivity(),MoviesListener, KodeinAware {
             }
         }
 
-        val viewModel = ViewModelProvider(this,factory).get(MoviesViewModel::class.java)
+        viewModel = ViewModelProvider(this,factory).get(MoviesViewModel::class.java)
         viewModel.moviesListener = this
         viewModel.movieList.observe(this, Observer {
             println("All movie List")
             itemList.addAll(it)
             adapter.notifyDataSetChanged()
         })
-        viewModel.getAllMovieList("popularity.desc",1)
+
 
         moviesRV.layoutManager = LinearLayoutManager(this)
         adapter = MovieAdapter(this, itemList as ArrayList<MovieResult>) {
@@ -63,8 +64,19 @@ class MainActivity : AppCompatActivity(),MoviesListener, KodeinAware {
         moviesRV.addItemDecoration(GridSpacingItemDecoration(2, globalDpToPx(16), true))
         moviesRV.itemAnimator = DefaultItemAnimator()
         moviesRV.adapter = adapter
+
+        getMovies()
+        swipeToRefresh.setOnRefreshListener {
+            getMovies()
+        }
     }
 
+    private fun getMovies() {
+        itemList.clear()
+        adapter.notifyDataSetChanged()
+        swipeToRefresh.isRefreshing = false
+        viewModel.getAllMovieList("popularity.desc",1)
+    }
     override fun onStarted() {
         progressBar.show()
     }
