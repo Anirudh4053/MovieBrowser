@@ -6,8 +6,8 @@ import com.oneroof.moviebrower.data.others.ERROR
 import com.oneroof.moviebrower.data.others.makeRequest
 
 class SearchRepository (private val myApi: MyApi){
-    fun getSearchList(query:String,onData:OnData){
-        myApi.queryMovie(query).makeRequest(
+    fun getSearchList(query:String,pageNo:Int,onData:OnData){
+        myApi.queryMovie(query,pageNo).makeRequest(
             onSuccess = { response ->
                 onData.onSuccess(response)
             },

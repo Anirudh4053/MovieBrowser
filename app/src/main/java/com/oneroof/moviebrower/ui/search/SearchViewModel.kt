@@ -11,14 +11,15 @@ import kotlinx.coroutines.launch
 class SearchViewModel(private val searchRepository: SearchRepository) : ViewModel() {
     //val movieList: LiveData<List<MovieResult>> = MutableLiveData()
     var searchListener: SearchListener? = null
-    fun getSearchMovieList(query:String){
-        searchListener?.onStarted()
-        searchRepository.getSearchList(query,object : SearchRepository.OnData{
-
+    fun getSearchMovieList(query:String,pageNo:Int){
+        if(pageNo == 1) {
+            searchListener?.onStarted()
+        }
+        searchRepository.getSearchList(query,pageNo,object : SearchRepository.OnData{
             override fun onSuccess(response: MovieResponse) {
                 searchListener?.onHideLoader()
                 viewModelScope.launch {
-                    searchListener?.onSuccess(response.results)
+                    searchListener?.onSuccess(response.results,response.page,response.totalPages)
                 }
             }
 

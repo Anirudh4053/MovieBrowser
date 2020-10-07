@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.oneroof.moviebrower.R
 import com.oneroof.moviebrower.data.model.GridSpacingItemDecoration
 import com.oneroof.moviebrower.data.model.MovieResult
@@ -26,7 +27,9 @@ import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_search.*
+import kotlinx.android.synthetic.main.activity_search.bottomProgressBar
 import kotlinx.android.synthetic.main.activity_search.progressBar
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
@@ -40,6 +43,9 @@ class SearchActivity : AppCompatActivity(),SearchListener, KodeinAware {
     private var itemList = mutableListOf<MovieResult>()
     private lateinit var viewModel:SearchViewModel
     private lateinit var adapter: MovieAdapter
+    var isLoading:Boolean = false
+    private var pageNo:Int = 1
+    private var searchQuery:String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -49,13 +55,14 @@ class SearchActivity : AppCompatActivity(),SearchListener, KodeinAware {
         }
         val cancelIcon = movie_search.findViewById<ImageView>(R.id.search_close_btn)
         cancelIcon.setImageResource(R.drawable.ic_close)
-        //cancelIcon.setColorFilter(R.color.whiteColor)
         val textView = movie_search.findViewById<TextView>(R.id.search_src_text)
         textView.setTextColor(ContextCompat.getColor(this, R.color.whiteColor))
         cancelIcon.setOnClickListener {
             movie_search.setQuery("", false)
             movie_search.clearFocus()
             clearList()
+            pageNo = 1
+            isLoading = true
         }
         movie_search.isFocusable = true
         movie_search.isIconified = false
@@ -67,7 +74,6 @@ class SearchActivity : AppCompatActivity(),SearchListener, KodeinAware {
                 override fun subscribe(emitter: ObservableEmitter<String>?) {
                     movie_search.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
                         override fun onQueryTextSubmit(query: String?): Boolean {
-                            //searchIcon.hide()
                             movie_search.clearFocus()
                             return false
                         }
@@ -129,10 +135,27 @@ class SearchActivity : AppCompatActivity(),SearchListener, KodeinAware {
         searchRV.addItemDecoration(GridSpacingItemDecoration(2, globalDpToPx(16), true))
         searchRV.itemAnimator = DefaultItemAnimator()
         searchRV.adapter = adapter
+
+        searchRV.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (! recyclerView.canScrollVertically(1)){ //1 for down
+                    if(!isLoading){
+                        println("pagination -- $pageNo")
+                        bottomProgressBar.show()
+                        isLoading = true
+                        viewModel.getSearchMovieList(searchQuery,pageNo)
+                    }
+                }
+            }
+        })
     }
     private fun sendRequestToServer(query:String?){
-        println("Search Query $query")
-        viewModel.getSearchMovieList(query?:"")
+        searchQuery = query?:""
+        itemList.clear()
+        pageNo = 1
+        isLoading = true
+        viewModel.getSearchMovieList(query?:"",pageNo)
     }
 
     override fun onBackPressed() {
@@ -150,19 +173,26 @@ class SearchActivity : AppCompatActivity(),SearchListener, KodeinAware {
     }
 
     override fun onFailure(message: String) {
-        clearList()
+        //clearList()
         onHideLoader()
         showToast(message)
     }
     override fun onHideLoader() {
         progressBar.hide()
+        bottomProgressBar.hide()
     }
-    override fun onSuccess(searchList: List<MovieResult>) {
+    override fun onSuccess(searchList: List<MovieResult>,page:Int,totalPages:Int) {
         if(searchList.isNullOrEmpty()) {
+            isLoading = true
+            if(page == 1) {
+                clearList()
+            }
             showToast("No record found")
         } else {
-            itemList.clear()
             onHideLoader()
+            pageNo = page+1
+            println("$page -- $pageNo --$totalPages")
+            isLoading = pageNo > totalPages
             itemList.addAll(searchList)
             adapter.notifyDataSetChanged()
         }

@@ -16,7 +16,7 @@ interface MyApi {
     fun getMovies(@Query("sort_by") sortBy: String, @Query("page")page:Int): Call<MovieResponse>
 
     @GET("/3/search/movie?api_key=$API")
-    fun queryMovie(@Query("query") query: String): Call<MovieResponse>
+    fun queryMovie(@Query("query") query: String, @Query("page")page:Int): Call<MovieResponse>
 
     companion object {
         operator fun invoke() : MyApi{
