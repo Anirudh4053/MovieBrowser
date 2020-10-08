@@ -1,11 +1,8 @@
 package com.oneroof.moviebrower.ui.search
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.oneroof.moviebrower.data.model.MovieResponse
-import com.oneroof.moviebrower.data.model.MovieResult
 import kotlinx.coroutines.launch
 
 class SearchViewModel(private val searchRepository: SearchRepository) : ViewModel() {

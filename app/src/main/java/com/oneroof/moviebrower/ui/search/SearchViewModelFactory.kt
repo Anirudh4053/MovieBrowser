@@ -2,8 +2,6 @@ package com.oneroof.moviebrower.ui.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.oneroof.moviebrower.ui.home.MoviesRepository
-import com.oneroof.moviebrower.ui.home.MoviesViewModel
 
 @Suppress("UNCHECKED_CAST")
 class SearchViewModelFactory (

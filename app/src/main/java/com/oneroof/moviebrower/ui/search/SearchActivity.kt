@@ -98,35 +98,23 @@ class SearchActivity : AppCompatActivity(),SearchListener, KodeinAware {
 
         observableQueryText.subscribe(object: Observer<String> {
             override fun onComplete() {
-                //progressBar.hide()
-                println("search onComplete")
             }
 
             override fun onSubscribe(d: Disposable?) {
-                println("search onSubscribe")
                 disposables.add(d)
             }
 
 
             override fun onNext(s: String?) {
-                println("search onNext $s")
-                //onHideLoader()
                 sendRequestToServer(s);
             }
 
             override fun onError(e: Throwable?) {
-                //progressBar.hide()
-                println("search onError")
             }
         })
 
         viewModel = ViewModelProvider(this,factory).get(SearchViewModel::class.java)
         viewModel.searchListener = this
-        /*viewModel.movieList.observe(this, Observer {
-            println("All movie List")
-            itemList.addAll(it)
-            adapter.notifyDataSetChanged()
-        })*/
 
         searchRV.layoutManager = LinearLayoutManager(this)
         adapter = MovieAdapter(this, itemList as ArrayList<MovieResult>) {
