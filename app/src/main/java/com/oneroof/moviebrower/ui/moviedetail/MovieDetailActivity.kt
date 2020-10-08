@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide
 import com.oneroof.moviebrower.R
 import com.oneroof.moviebrower.data.model.MovieResult
 import com.oneroof.moviebrower.data.others.MOVIE_IMAGE_PATH
+import com.oneroof.moviebrower.data.others.convertDateFormat
 import kotlinx.android.synthetic.main.activity_movie_detail.*
 import kotlinx.android.synthetic.main.custom_movie_items.view.*
 import kotlinx.android.synthetic.main.custom_rating_layout.view.*
@@ -59,6 +60,11 @@ class MovieDetailActivity : AppCompatActivity() {
             includeRating.apply {
                 this.ratingTxt.text = "${movieDetail?.voteAverage}/10"
                 this.totalRatings.text = "${movieDetail?.voteCount}"
+            }
+            includeReleaseDate.apply {
+                this.starImage.setImageResource(R.drawable.ic_date)
+                this.ratingTxt.text = "Release Date"
+                this.totalRatings.text = "${convertDateFormat(movieDetail?.releaseDate?:"")}"
             }
 
         }

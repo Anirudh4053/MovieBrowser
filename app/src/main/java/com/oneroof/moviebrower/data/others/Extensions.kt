@@ -20,6 +20,9 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 const val BASE_URL = "https://api.themoviedb.org"
 const val API = "2a4c1a201c7c4ffc801192a2c7e6096d"
@@ -93,4 +96,17 @@ fun <T> Call<T>.makeRequest(onSuccess: (T) -> Unit, onFailure: (Throwable) -> Un
             onFailure(Throwable("Please check your internet connection."))
         }
     })
+}
+
+fun convertDateFormat(dateString: String):String {
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+    var convertedDate = Date()
+    try {
+        convertedDate = dateFormat.parse(dateString)
+        val sdfnewformat = SimpleDateFormat("MMM dd yyyy")
+        return sdfnewformat.format(convertedDate)
+    } catch (e: ParseException) {
+        e.printStackTrace()
+    }
+    return ""
 }
