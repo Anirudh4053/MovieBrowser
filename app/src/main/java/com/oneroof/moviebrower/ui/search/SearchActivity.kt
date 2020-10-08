@@ -20,7 +20,6 @@ import com.oneroof.moviebrower.data.others.hide
 import com.oneroof.moviebrower.data.others.show
 import com.oneroof.moviebrower.data.others.showToast
 import com.oneroof.moviebrower.ui.home.MovieAdapter
-import com.oneroof.moviebrower.ui.home.MoviesViewModelFactory
 import com.oneroof.moviebrower.ui.moviedetail.MovieDetailActivity
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.ObservableEmitter
@@ -28,8 +27,8 @@ import io.reactivex.rxjava3.core.ObservableOnSubscribe
 import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.exceptions.UndeliverableException
 import io.reactivex.rxjava3.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.activity_search.bottomProgressBar
 import kotlinx.android.synthetic.main.activity_search.progressBar
@@ -81,7 +80,6 @@ class SearchActivity : AppCompatActivity(),SearchListener, KodeinAware {
                         }
 
                         override fun onQueryTextChange(newText: String?): Boolean {
-                            println("search onQueryTextChange $newText")
                             onStarted()
                             if (!emitter?.isDisposed!!) {
                                 emitter.onNext(newText)
@@ -98,6 +96,7 @@ class SearchActivity : AppCompatActivity(),SearchListener, KodeinAware {
 
         observableQueryText.subscribe(object: Observer<String> {
             override fun onComplete() {
+                println("rx onComplete")
             }
 
             override fun onSubscribe(d: Disposable?) {
@@ -106,10 +105,12 @@ class SearchActivity : AppCompatActivity(),SearchListener, KodeinAware {
 
 
             override fun onNext(s: String?) {
+                println("rx onNext")
                 sendRequestToServer(s);
             }
 
             override fun onError(e: Throwable?) {
+                println("rx error ${e?.message}")
             }
         })
 
@@ -145,11 +146,17 @@ class SearchActivity : AppCompatActivity(),SearchListener, KodeinAware {
         })
     }
     private fun sendRequestToServer(query:String?){
-        searchQuery = query?:""
-        itemList.clear()
-        pageNo = 1
-        isLoading = true
-        viewModel.getSearchMovieList(query?:"",pageNo)
+        try {
+            searchQuery = query ?: ""
+            itemList.clear()
+            pageNo = 1
+            isLoading = true
+            viewModel.getSearchMovieList(query ?: "", pageNo)
+        } catch (e:UndeliverableException) {
+            println(println("rx UndeliverableException ${e.message}"))
+        } catch (e: Exception) {
+            println(println("rx Exception ${e.message}"))
+        }
     }
 
     override fun onBackPressed() {
@@ -162,7 +169,6 @@ class SearchActivity : AppCompatActivity(),SearchListener, KodeinAware {
     }
 
     override fun onStarted() {
-        //clearList()
         progressBar.show()
     }
 
