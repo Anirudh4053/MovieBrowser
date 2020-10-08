@@ -40,7 +40,7 @@ class MovieDetailActivity : AppCompatActivity() {
             circularProgressDrawable.start()
             Glide
                 .with(this)
-                .load("$MOVIE_IMAGE_PATH${movieDetail?.backdropPath}")
+                .load("$MOVIE_IMAGE_PATH${movieDetail?.backdropPath?:movieDetail?.posterPath}")
                 .centerCrop()
                 .placeholder(circularProgressDrawable)
                 .into(coverImage)
@@ -55,7 +55,10 @@ class MovieDetailActivity : AppCompatActivity() {
                 .placeholder(circularProgressDrawable)
                 .into(smallImageView)
 
-            overViewTxt.text = "${movieDetail?.overview}"
+            if(movieDetail?.overview.isNullOrEmpty())
+                overViewTxt.text = "No content"
+            else
+                overViewTxt.text = "${movieDetail?.overview}"
 
             includeRating.apply {
                 this.ratingTxt.text = "${movieDetail?.voteAverage}/10"

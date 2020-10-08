@@ -105,7 +105,7 @@ class SearchActivity : AppCompatActivity(),SearchListener, KodeinAware {
 
 
             override fun onNext(s: String?) {
-                println("rx onNext")
+                println("rx onNext $s")
                 sendRequestToServer(s);
             }
 
@@ -174,6 +174,7 @@ class SearchActivity : AppCompatActivity(),SearchListener, KodeinAware {
 
     override fun onFailure(message: String) {
         //clearList()
+        isLoading = false
         onHideLoader()
         showToast(message)
     }

@@ -3,6 +3,7 @@ package com.oneroof.moviebrower.ui.home
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -31,6 +32,7 @@ class MainActivity : AppCompatActivity(),MoviesListener, KodeinAware {
     private var itemList = mutableListOf<MovieResult>()
     private lateinit var adapter:MovieAdapter
     private lateinit var viewModel:MoviesViewModel
+    private var backPressToExit:Boolean = false
     //for pagination
     var isLoading:Boolean = false
     private var pageNo:Int = 1
@@ -112,6 +114,7 @@ class MainActivity : AppCompatActivity(),MoviesListener, KodeinAware {
     }
 
     override fun onFailure(message: String) {
+        isLoading = false
         onHideLoader()
         showToast(message)
     }
@@ -158,5 +161,15 @@ class MainActivity : AppCompatActivity(),MoviesListener, KodeinAware {
         }
         dialog.setContentView(bottomSheet)
         dialog.show()
+    }
+
+    override fun onBackPressed() {
+        if (backPressToExit) {
+            super.onBackPressed()
+            return
+        }
+        backPressToExit = true
+        showToast(" Press Back again to Exit ")
+        Handler().postDelayed(Runnable { backPressToExit = false }, 2000)
     }
 }
